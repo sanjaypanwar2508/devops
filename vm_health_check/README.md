@@ -1,4 +1,6 @@
-# VM Health Check Script - Usage Guide
+# VM Health Check Script
+
+A shell script that monitors the health of Ubuntu virtual machines by analyzing CPU, memory, and disk usage.
 
 ## Overview
 This script monitors the health of Ubuntu virtual machines by checking CPU, memory, and disk usage against a 60% threshold.

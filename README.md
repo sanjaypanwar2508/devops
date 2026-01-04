@@ -7,12 +7,12 @@ This repository is used for learning DevOps and creating projects.
 ### VM Health Check Script
 A shell script that monitors the health of Ubuntu virtual machines by analyzing CPU, memory, and disk usage.
 
-**Files:**
-- `vm_health_check.sh` - Main health monitoring script
-- `VM_HEALTH_CHECK_USAGE.md` - Detailed usage guide
+**Location:** `vm_health_check/`
 
 **Quick Start:**
 ```bash
+cd vm_health_check
+
 # Basic health check
 ./vm_health_check.sh
 
@@ -20,4 +20,4 @@ A shell script that monitors the health of Ubuntu virtual machines by analyzing 
 ./vm_health_check.sh explain
 ```
 
-See [VM_HEALTH_CHECK_USAGE.md](VM_HEALTH_CHECK_USAGE.md) for complete documentation.
+See [vm_health_check/README.md](vm_health_check/README.md) for complete documentation.
