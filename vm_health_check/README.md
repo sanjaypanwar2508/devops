@@ -1,25 +1,35 @@
-# VM Health Check Script
+# VM Health Check
 
-A shell script that monitors the health of Ubuntu virtual machines by analyzing CPU, memory, and disk usage.
+A comprehensive shell script for monitoring Ubuntu virtual machine health based on CPU, memory, and disk usage.
 
 ## Overview
-This script monitors the health of Ubuntu virtual machines by checking CPU, memory, and disk usage against a 60% threshold.
 
-## Health Criteria
-- **HEALTHY**: All resources (CPU, Memory, Disk) are below 60% utilization
+This script analyzes the health of your Ubuntu VM by checking three critical system metrics:
+- **CPU Usage**: Current CPU utilization percentage
+- **Memory Usage**: Current memory utilization percentage
+- **Disk Usage**: Current disk space utilization percentage
+
+## Health Status Criteria
+
+- **HEALTHY**: All resources are below 60% utilization
 - **NOT HEALTHY**: Any resource exceeds 60% utilization
 
-## Usage
-
-### Basic Usage
-Run the script without arguments to get a simple health status:
+## Quick Start
 
 ```bash
+# Basic health check
 ./vm_health_check.sh
+
+# Detailed health check with explanations and recommendations
+./vm_health_check.sh explain
 ```
 
-**Example Output:**
-```
+## Usage Examples
+
+### Basic Check
+```bash
+$ ./vm_health_check.sh
+
 ==================================
    VM HEALTH CHECK REPORT
 ==================================
@@ -29,15 +39,10 @@ Health Status: HEALTHY
 ==================================
 ```
 
-### Detailed Explanation Mode
-Run with the `explain` argument to see detailed metrics and reasons:
-
+### Detailed Check (Healthy System)
 ```bash
-./vm_health_check.sh explain
-```
+$ ./vm_health_check.sh explain
 
-**Example Output (Healthy):**
-```
 ==================================
    VM HEALTH CHECK REPORT
 ==================================
@@ -59,8 +64,10 @@ Reason: All system resources are within acceptable limits.
 ==================================
 ```
 
-**Example Output (Not Healthy):**
-```
+### Detailed Check (Unhealthy System)
+```bash
+$ ./vm_health_check.sh explain
+
 ==================================
    VM HEALTH CHECK REPORT
 ==================================
@@ -90,11 +97,23 @@ Recommendations:
 ==================================
 ```
 
-## Exit Codes
-- `0`: VM is healthy
-- `1`: VM is not healthy
+## Features
 
-This allows integration with monitoring systems:
+- **Color-coded output**: Green for healthy, red for unhealthy status
+- **Exit codes**: Returns 0 for healthy, 1 for unhealthy (useful for automation)
+- **Detailed explanations**: Optional `explain` argument provides comprehensive diagnostics
+- **Actionable recommendations**: Specific suggestions for resolving each issue
+- **Ubuntu optimized**: Built for Ubuntu systems with commonly available tools
+
+## Exit Codes
+
+- `0`: VM is healthy (all resources below 60%)
+- `1`: VM is not healthy (any resource at or above 60%)
+
+## Integration with Monitoring Systems
+
+The exit codes allow easy integration with monitoring solutions:
+
 ```bash
 ./vm_health_check.sh
 if [ $? -eq 0 ]; then
@@ -104,29 +123,55 @@ else
 fi
 ```
 
-## Prerequisites
-The script requires these common Ubuntu utilities:
-- `top` - for CPU usage
-- `free` - for memory usage
-- `df` - for disk usage
-- `bc` - for floating-point calculations
+## Cron Scheduling
 
-Install if missing:
-```bash
-sudo apt-get update
-sudo apt-get install -y bc procps coreutils
-```
-
-## Automation
-You can schedule this script using cron for regular monitoring:
+Automate health checks with cron:
 
 ```bash
 # Check VM health every 5 minutes and log results
 */5 * * * * /path/to/vm_health_check.sh explain >> /var/log/vm_health.log 2>&1
 ```
 
-## Customization
-To change the threshold, edit the `THRESHOLD` variable in the script:
+## Prerequisites
+
+The script requires these standard Ubuntu utilities:
+
+- `top` - for CPU usage analysis
+- `free` - for memory information
+- `df` - for disk space information
+- `bc` - for floating-point calculations
+- Standard Unix tools: `grep`, `awk`, `cut`, `sed`
+
+Most are pre-installed on Ubuntu. Install missing dependencies:
+
 ```bash
-THRESHOLD=60  # Change this value as needed
+sudo apt-get update
+sudo apt-get install -y bc procps coreutils
 ```
+
+## Customization
+
+### Change Threshold
+
+Edit the `THRESHOLD` variable in the script:
+
+```bash
+THRESHOLD=70  # Change from 60 to 70 percent
+```
+
+## Requirements
+
+- Ubuntu 16.04 or later
+- Bash shell
+- Root or sudo access (for top command)
+
+## License
+
+Open source and free to use.
+
+## Notes
+
+- The script measures root partition (`/`) disk usage. Adjust the script if monitoring specific partitions is needed.
+- CPU usage is sampled over 1 second for accuracy.
+- Memory usage is calculated as used/total RAM.
+- All percentages are rounded to 2 decimal places for memory, and whole numbers for CPU/disk.
